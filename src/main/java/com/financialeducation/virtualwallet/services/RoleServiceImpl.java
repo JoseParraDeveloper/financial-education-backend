@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
 import com.financialeducation.virtualwallet.entities.Role;
-import com.financialeducation.virtualwallet.entities.User;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
 import com.financialeducation.virtualwallet.repositories.IRoleRepository;
