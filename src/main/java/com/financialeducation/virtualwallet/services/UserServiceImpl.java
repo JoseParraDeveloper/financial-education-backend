@@ -13,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
+
 import com.financialeducation.virtualwallet.entities.User;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
+
 import com.financialeducation.virtualwallet.repositories.IUserRepository;
 
 @Service

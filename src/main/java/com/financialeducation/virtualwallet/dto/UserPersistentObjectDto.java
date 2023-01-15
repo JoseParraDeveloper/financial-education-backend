@@ -1,8 +1,6 @@
 package com.financialeducation.virtualwallet.dto;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +16,6 @@ public class UserPersistentObjectDto extends EntityFinancialEducationAndVirtualW
 	private String surname;
 	private String username;
 	private String password;
-	@JsonIgnore
-	private List<UserRolePersistentObjectDto> roles;
+	private Set<RolePersistentObjectDto> roles;
 
 }

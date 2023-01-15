@@ -1,11 +1,11 @@
 package com.financialeducation.virtualwallet.entities;
 
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import javax.validation.constraints.NotBlank;
@@ -33,8 +33,9 @@ public class User extends EntityFinancialEducationAndVirtualWallet {
 	private String username;
 	@NotBlank(message = "Password may not be blank")
 	private String password;
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@ManyToMany
+	@JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@JsonIgnore
-	private List<UserRole> roles;
+	private Set<Role> roles;
 
 }

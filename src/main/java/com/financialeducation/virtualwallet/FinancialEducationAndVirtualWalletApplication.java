@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FinancialEducationAndVirtualWalletApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FinancialEducationAndVirtualWalletApplication.class, args);
 
 	}

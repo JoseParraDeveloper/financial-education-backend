@@ -1,6 +1,6 @@
 package com.financialeducation.virtualwallet.dto;
 
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,5 +17,5 @@ public class RolePersistentObjectDto extends FinancialEducationAndVirtualWalletP
 	private String name;
 	private String description;
 	@JsonIgnore
-	private List<UserRolePersistentObjectDto> user;
+	private Set<UserPersistentObjectDto> user;
 }
