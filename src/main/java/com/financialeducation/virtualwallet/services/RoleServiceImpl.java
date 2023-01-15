@@ -71,7 +71,10 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public void deleteRoleById(Long idRole) throws ResourceNotFoundException {
-
+		Optional<Role> optionalRole = roleRepository.findById(idRole);
+		optionalRole.ifPresentOrElse(role -> roleRepository.deleteById(role.getId()), () -> {
+			throw new ResourceNotFoundException("Role", "ID", idRole.toString());
+		});
 	}
 
 }

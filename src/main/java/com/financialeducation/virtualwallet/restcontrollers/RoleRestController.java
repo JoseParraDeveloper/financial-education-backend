@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
-import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
 import com.financialeducation.virtualwallet.services.IRoleService;
@@ -63,6 +63,16 @@ public class RoleRestController {
 			return new ResponseEntity<>(resourceNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
 		} catch (BadRequestException badRequestException) {
 			return new ResponseEntity<>(badRequestException.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteRole(@PathVariable("id") Long idRole) {
+		try {
+			roleService.deleteRoleById(idRole);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (ResourceNotFoundException resourceNotFoundException) {
+			return new ResponseEntity<>(resourceNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
 }
