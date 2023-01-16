@@ -3,8 +3,11 @@ package com.financialeducation.virtualwallet.restcontrollers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
+import com.financialeducation.virtualwallet.dto.UserViewDto;
 import com.financialeducation.virtualwallet.entities.Role;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
@@ -37,6 +41,9 @@ public class UserRestController {
 	private IUserService userService;
 	@Autowired
 	private IRoleService roleService;
+	@Autowired
+	@Qualifier("modelMapperUser")
+	private ModelMapper modelMapper;
 	@Value("${sizePageUser}")
 	private int sizePageUser;
 
@@ -101,5 +108,16 @@ public class UserRestController {
 		} catch (BadRequestException badRequestException) {
 			return new ResponseEntity<>(badRequestException.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@GetMapping(value = "/allUsers")
+	public ResponseEntity<?> getAllUsersView() {
+		List<UserPersistentObjectDto> listUsers = userService.listAllUsers();
+		List<UserViewDto> listUserViewDto = listUsers.stream().map(user -> modelMapper.map(user, UserViewDto.class))
+				.collect(Collectors.toList());
+		if (listUserViewDto.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("There are no users.");
+		}
+		return ResponseEntity.ok(listUserViewDto);
 	}
 }

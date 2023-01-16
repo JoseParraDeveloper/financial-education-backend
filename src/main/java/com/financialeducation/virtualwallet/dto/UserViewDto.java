@@ -11,13 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserPersistentObjectDto extends EntityFinancialEducationAndVirtualWalletPersistentObjectDto {
+public class UserViewDto {
 
+	private Long id;
+	private String name;
 	private String surname;
-	private String username;
-	private String password;
-	private boolean active;
 	private String listRolesString;
+	private boolean active;
 	private Set<RolePersistentObjectDto> roles;
 
 	public String getListRolesString() {
