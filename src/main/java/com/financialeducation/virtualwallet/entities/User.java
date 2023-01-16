@@ -33,6 +33,7 @@ public class User extends EntityFinancialEducationAndVirtualWallet {
 	private String username;
 	@NotBlank(message = "Password may not be blank")
 	private String password;
+	private boolean active;
 	@ManyToMany
 	@JoinTable(name = "roles_users", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@JsonIgnore

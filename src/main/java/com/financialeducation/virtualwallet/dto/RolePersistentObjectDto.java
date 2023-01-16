@@ -17,5 +17,5 @@ public class RolePersistentObjectDto extends FinancialEducationAndVirtualWalletP
 	private String name;
 	private String description;
 	@JsonIgnore
-	private Set<UserPersistentObjectDto> user;
+	private Set<UserPersistentObjectDto> users;
 }

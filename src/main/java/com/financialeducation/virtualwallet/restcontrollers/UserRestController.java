@@ -3,8 +3,11 @@ package com.financialeducation.virtualwallet.restcontrollers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,9 @@ public class UserRestController {
 	private IUserService userService;
 	@Autowired
 	private IRoleService roleService;
+	@Autowired
+	@Qualifier("modelMapperUser")
+	private ModelMapper modelMapper;
 	@Value("${sizePageUser}")
 	private int sizePageUser;
 
@@ -102,4 +108,5 @@ public class UserRestController {
 			return new ResponseEntity<>(badRequestException.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 }
