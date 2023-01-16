@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
-import com.financialeducation.virtualwallet.dto.UserViewDto;
 import com.financialeducation.virtualwallet.entities.Role;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
@@ -110,14 +109,4 @@ public class UserRestController {
 		}
 	}
 
-	@GetMapping(value = "/allUsers")
-	public ResponseEntity<?> getAllUsersView() {
-		List<UserPersistentObjectDto> listUsers = userService.listAllUsers();
-		List<UserViewDto> listUserViewDto = listUsers.stream().map(user -> modelMapper.map(user, UserViewDto.class))
-				.collect(Collectors.toList());
-		if (listUserViewDto.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("There are no users.");
-		}
-		return ResponseEntity.ok(listUserViewDto);
-	}
 }
