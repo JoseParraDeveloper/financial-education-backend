@@ -1,5 +1,6 @@
 package com.financialeducation.virtualwallet.entities;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public abstract class EntityFinancialEducationAndVirtualWallet
 	private String name;
 	@Email(message = "Email is not valid")
 	@NotEmpty(message = "Email cannot be empty")
+	@Column(unique = true)
 	private String email;
 	private String telephone;
 
