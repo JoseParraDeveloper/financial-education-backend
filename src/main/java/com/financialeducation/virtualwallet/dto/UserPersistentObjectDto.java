@@ -2,6 +2,8 @@ package com.financialeducation.virtualwallet.dto;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +18,8 @@ public class UserPersistentObjectDto extends EntityFinancialEducationAndVirtualW
 	private String surname;
 	private String username;
 	private String password;
-	private boolean active;
-	private String listRolesString;
+	private boolean enabled;
+	@JsonIgnore
 	private Set<RolePersistentObjectDto> roles;
-
-	public String getListRolesString() {
-		StringBuilder stringBuiler = new StringBuilder();
-		for (RolePersistentObjectDto rolePersistentObjectDto : roles) {
-			stringBuiler.append(rolePersistentObjectDto.getName() + ", ");
-		}
-		this.listRolesString = stringBuiler.substring(0, stringBuiler.length() - 2) + ".";
-		return listRolesString;
-	}
 
 }

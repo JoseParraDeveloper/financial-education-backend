@@ -4,15 +4,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,11 +35,12 @@ public class User extends EntityFinancialEducationAndVirtualWallet {
 	private String username;
 	@NotBlank(message = "Password may not be blank")
 	private String password;
-	private boolean active;
+	private boolean enabled;
 	@NotNull
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	@JsonIgnore
 	private Set<Role> roles;
+	@Transient
+	public static final Long ID_USER_ADMIN = 1L;
 
 }

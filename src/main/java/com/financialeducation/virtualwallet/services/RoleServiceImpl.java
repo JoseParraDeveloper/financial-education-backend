@@ -43,7 +43,7 @@ public class RoleServiceImpl implements IRoleService {
 	public RolePersistentObjectDto getRoleById(Long idRole) throws ResourceNotFoundException {
 		Optional<Role> optionalRole = roleRepository.findById(idRole);
 		return modelMapper.map(
-				optionalRole.orElseThrow(() -> new ResourceNotFoundException("User", "ID", idRole.toString())),
+				optionalRole.orElseThrow(() -> new ResourceNotFoundException("Role", "ID", idRole.toString())),
 				RolePersistentObjectDto.class);
 	}
 
@@ -61,7 +61,7 @@ public class RoleServiceImpl implements IRoleService {
 		if (idRoleUpdate != null) {
 			Optional<Role> optionalRole = roleRepository.findById(idRoleUpdate);
 			if (!optionalRole.isPresent()) {
-				throw new ResourceNotFoundException("User", "ID", idRoleUpdate.toString());
+				throw new ResourceNotFoundException("Role", "ID", idRoleUpdate.toString());
 			}
 		} else {
 			throw new BadRequestException("id " + idRoleUpdate);

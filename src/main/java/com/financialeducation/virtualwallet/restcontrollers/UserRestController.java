@@ -3,7 +3,6 @@ package com.financialeducation.virtualwallet.restcontrollers;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
-import com.financialeducation.virtualwallet.entities.Role;
+import com.financialeducation.virtualwallet.enums.RoleEnum;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
 import com.financialeducation.virtualwallet.services.IRoleService;
@@ -80,9 +79,9 @@ public class UserRestController {
 	@PostMapping(value = "/register")
 	public ResponseEntity<UserPersistentObjectDto> registerUser(
 			@RequestBody UserPersistentObjectDto userPersistentObjectDto) {
-		RolePersistentObjectDto roleInvited = roleService.getRoleById(Role.getROLE_INVITADO());
+		RolePersistentObjectDto roleGuest = roleService.getRoleById(RoleEnum.ROLE_GUEST.getId());
 		Set<RolePersistentObjectDto> roleSet = new HashSet<>();
-		roleSet.add(roleInvited);
+		roleSet.add(roleGuest);
 		userPersistentObjectDto.setRoles(roleSet);
 		return ResponseEntity.ok(userService.createUser(userPersistentObjectDto));
 	}

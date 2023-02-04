@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -35,7 +36,7 @@ public class Role extends FinancialEducationAndVirtualWalletPersistentObject {
 	@NotBlank(message = "Name may not be blank")
 	@Column(length = 1000)
 	private String description;
-	@ManyToMany(mappedBy = "roles")
-	private Set<User> user;
+	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	private Set<User> users;
 
 }
