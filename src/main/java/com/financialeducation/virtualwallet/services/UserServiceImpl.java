@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
@@ -27,10 +28,14 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	@Qualifier("modelMapperUser")
 	private ModelMapper modelMapper;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserPersistentObjectDto createUser(UserPersistentObjectDto userPersistentObjectDto) {
 		User newUser = modelMapper.map(userPersistentObjectDto, User.class);
+		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+		newUser.setEnabled(true);
 		newUser = userRepository.save(newUser);
 		return modelMapper.map(newUser, UserPersistentObjectDto.class);
 	}

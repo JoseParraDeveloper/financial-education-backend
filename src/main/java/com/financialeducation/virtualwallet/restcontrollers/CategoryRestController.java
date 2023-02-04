@@ -23,7 +23,7 @@ import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException
 import com.financialeducation.virtualwallet.services.ICategoryService;
 
 @RestController
-@RequestMapping(value = "/api/category")
+@RequestMapping(value = "/api/category/v1")
 public class CategoryRestController {
 	@Autowired
 	private ICategoryService categoryService;
