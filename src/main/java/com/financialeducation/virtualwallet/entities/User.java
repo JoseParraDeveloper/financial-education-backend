@@ -1,5 +1,6 @@
 package com.financialeducation.virtualwallet.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class User extends EntityFinancialEducationAndVirtualWallet {
 	@NotNull
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	private Set<Role> roles = new HashSet<>();
 	@Transient
 	public static final Long ID_USER_ADMIN = 1L;
 

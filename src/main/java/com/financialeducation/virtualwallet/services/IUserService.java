@@ -20,7 +20,8 @@ public interface IUserService {
 	public UserPersistentObjectDto updateUser(UserPersistentObjectDto userPersistentObjectDto)
 			throws ResourceNotFoundException, BadRequestException;
 
-	public UserPersistentObjectDto createUser(UserPersistentObjectDto userPersistentObjectDto);
+	public UserPersistentObjectDto createUser(UserPersistentObjectDto userPersistentObjectDto)
+			throws BadRequestException;
 
 	public void deleteUserById(Long idUser) throws ResourceNotFoundException;
 

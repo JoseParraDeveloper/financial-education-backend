@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +36,7 @@ import com.financialeducation.virtualwallet.services.IUserService;
 
 @RestController
 @RequestMapping(value = "/api/user/v1")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin
 public class UserRestController {
 
 	@Autowired
@@ -77,13 +81,34 @@ public class UserRestController {
 	}
 
 	@PostMapping(value = "/register")
-	public ResponseEntity<UserPersistentObjectDto> registerUser(
-			@RequestBody UserPersistentObjectDto userPersistentObjectDto) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserPersistentObjectDto userPersistentObjectDto,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			StringBuilder messageErrors = new StringBuilder(
+					"You can't register. It has " + bindingResult.getFieldErrorCount() + " errors. ");
+			List<ObjectError> listErrors = bindingResult.getAllErrors();
+			int numberMessage = 1;
+			for (ObjectError objectError : listErrors) {
+				if (numberMessage < bindingResult.getFieldErrorCount()) {
+					messageErrors.append(objectError.getDefaultMessage() + ", ");
+				} else {
+					messageErrors.append(objectError.getDefaultMessage() + ".");
+				}
+				numberMessage += 1;
+			}
+			return new ResponseEntity<>(messageErrors, HttpStatus.BAD_REQUEST);
+		}
 		RolePersistentObjectDto roleGuest = roleService.getRoleById(RoleEnum.ROLE_GUEST.getId());
 		Set<RolePersistentObjectDto> roleSet = new HashSet<>();
 		roleSet.add(roleGuest);
 		userPersistentObjectDto.setRoles(roleSet);
-		return ResponseEntity.ok(userService.createUser(userPersistentObjectDto));
+		try {
+			userPersistentObjectDto = userService.createUser(userPersistentObjectDto);
+			return ResponseEntity.ok(userPersistentObjectDto);
+		} catch (BadRequestException badRequestException) {
+			return new ResponseEntity<>(badRequestException.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@DeleteMapping("/delete/{id}")

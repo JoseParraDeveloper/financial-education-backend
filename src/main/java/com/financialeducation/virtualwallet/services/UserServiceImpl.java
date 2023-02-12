@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.financialeducation.virtualwallet.dto.UserPersistentObjectDto;
 
@@ -22,6 +23,7 @@ import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException
 import com.financialeducation.virtualwallet.repositories.IUserRepository;
 
 @Service
+@Transactional
 public class UserServiceImpl implements IUserService {
 	@Autowired
 	private IUserRepository userRepository;
@@ -34,6 +36,12 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserPersistentObjectDto createUser(UserPersistentObjectDto userPersistentObjectDto) {
 		User newUser = modelMapper.map(userPersistentObjectDto, User.class);
+		if (Boolean.TRUE.equals(userRepository.existsByUsername(userPersistentObjectDto.getUsername()))) {
+			throw new BadRequestException("Username already exists.");
+		}
+		if (Boolean.TRUE.equals(userRepository.existsByEmail(userPersistentObjectDto.getEmail()))) {
+			throw new BadRequestException("Email already exists.");
+		}
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		newUser.setEnabled(true);
 		newUser = userRepository.save(newUser);
@@ -91,8 +99,11 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserPersistentObjectDto findByUsername(String username) {
-
-		return null;
+		Optional<User> optionalUser = userRepository.findByUsername(username);
+		return modelMapper.map(
+				optionalUser
+						.orElseThrow(() -> new ResourceNotFoundException("User", "Username", username.toUpperCase())),
+				UserPersistentObjectDto.class);
 	}
 
 }
