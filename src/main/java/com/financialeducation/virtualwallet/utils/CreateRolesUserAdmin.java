@@ -1,4 +1,4 @@
-package com.financialeducation.virtualwallet.utiles;
+package com.financialeducation.virtualwallet.utils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
@@ -32,8 +31,6 @@ public class CreateRolesUserAdmin implements CommandLineRunner {
 	@Autowired
 	@Qualifier("modelMapperUser")
 	private ModelMapper modelMapperUser;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -73,7 +70,7 @@ public class CreateRolesUserAdmin implements CommandLineRunner {
 			userAdmin.setTelephone("+58 412 8243338");
 			userAdmin.setSurname("Administrador de la aplicación");
 			userAdmin.setUsername("AdminFEVW");
-			userAdmin.setPassword(passwordEncoder.encode("admin"));
+			userAdmin.setPassword("admin");
 			userAdmin.setEnabled(true);
 			Set<Role> roles = new HashSet<>();
 			Role role = modelMapper.map(roleService.getRoleById(1L), Role.class);
@@ -82,6 +79,7 @@ public class CreateRolesUserAdmin implements CommandLineRunner {
 			UserPersistentObjectDto userDto = modelMapperUser.map(userAdmin, UserPersistentObjectDto.class);
 			userService.createUser(userDto);
 		}
+
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.financialeducation.virtualwallet.dto.RolePersistentObjectDto;
 import com.financialeducation.virtualwallet.entities.Role;
+import com.financialeducation.virtualwallet.enums.RoleEnum;
 import com.financialeducation.virtualwallet.exceptions.BadRequestException;
 import com.financialeducation.virtualwallet.exceptions.ResourceNotFoundException;
 import com.financialeducation.virtualwallet.repositories.IRoleRepository;
@@ -35,7 +36,6 @@ public class RoleServiceImpl implements IRoleService {
 
 	@Override
 	public Page<RolePersistentObjectDto> pageRole(Pageable pageable) {
-
 		return null;
 	}
 
@@ -75,6 +75,15 @@ public class RoleServiceImpl implements IRoleService {
 		optionalRole.ifPresentOrElse(role -> roleRepository.deleteById(role.getId()), () -> {
 			throw new ResourceNotFoundException("Role", "ID", idRole.toString());
 		});
+	}
+
+	@Override
+	public RolePersistentObjectDto findByRoleEnum(RoleEnum roleEnum) {
+		Optional<Role> optionalRole = roleRepository.findByRoleEnum(roleEnum);
+		return modelMapper.map(
+				optionalRole.orElseThrow(
+						() -> new ResourceNotFoundException("Role", "Role Enum", roleEnum.name().toUpperCase())),
+				RolePersistentObjectDto.class);
 	}
 
 }

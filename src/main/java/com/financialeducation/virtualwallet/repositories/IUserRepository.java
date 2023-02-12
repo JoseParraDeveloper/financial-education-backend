@@ -10,6 +10,10 @@ import com.financialeducation.virtualwallet.entities.User;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
 
-	public Optional<User> findOneByUsername(String username);
+	public Optional<User> findByUsername(String username);
+
+	public boolean existsByUsername(String username);
+
+	public boolean existsByEmail(String email);
 
 }
