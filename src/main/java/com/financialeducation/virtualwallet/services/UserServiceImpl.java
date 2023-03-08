@@ -36,14 +36,33 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserPersistentObjectDto createUser(UserPersistentObjectDto userPersistentObjectDto) {
 		User newUser = modelMapper.map(userPersistentObjectDto, User.class);
-		if (Boolean.TRUE.equals(userRepository.existsByUsername(userPersistentObjectDto.getUsername()))) {
-			throw new BadRequestException("Username already exists.");
+		Long idUser = newUser.getId();
+		if (idUser != null) {
+			Optional<User> updateUserOptional = userRepository.findById(idUser);
+			if (updateUserOptional.isPresent()) {
+				User updateUser = updateUserOptional.get();
+				boolean editUsername = !updateUser.getUsername().equals(newUser.getUsername());
+				boolean editEmail = !updateUser.getEmail().equals(newUser.getEmail());
+				if (Boolean.TRUE.equals(editUsername)
+						&& Boolean.TRUE.equals(userRepository.existsByUsername(newUser.getUsername()))) {
+					throw new BadRequestException("Username already exists.");
+				}
+				if (Boolean.TRUE.equals(editEmail)
+						&& Boolean.TRUE.equals(userRepository.existsByEmail(newUser.getEmail()))) {
+					throw new BadRequestException("Email already exists.");
+				}
+				newUser.setRoles(updateUser.getRoles());
+			}
+		} else {
+			if (Boolean.TRUE.equals(userRepository.existsByUsername(userPersistentObjectDto.getUsername()))) {
+				throw new BadRequestException("Username already exists.");
+			}
+			if (Boolean.TRUE.equals(userRepository.existsByEmail(userPersistentObjectDto.getEmail()))) {
+				throw new BadRequestException("Email already exists.");
+			}
+			newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+			newUser.setEnabled(true);
 		}
-		if (Boolean.TRUE.equals(userRepository.existsByEmail(userPersistentObjectDto.getEmail()))) {
-			throw new BadRequestException("Email already exists.");
-		}
-		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-		newUser.setEnabled(true);
 		newUser = userRepository.save(newUser);
 		return modelMapper.map(newUser, UserPersistentObjectDto.class);
 	}

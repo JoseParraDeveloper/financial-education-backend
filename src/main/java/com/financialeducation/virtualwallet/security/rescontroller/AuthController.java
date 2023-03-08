@@ -22,7 +22,7 @@ import com.financialeducation.virtualwallet.security.jwt.JwtProvider;
 import com.financialeducation.virtualwallet.security.models.AuthCredentials;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/authenticate/v1")
 @CrossOrigin
 public class AuthController {
 
