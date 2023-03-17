@@ -1,4 +1,4 @@
-	package com.financialeducation.virtualwallet.restcontrollers;
+package com.financialeducation.virtualwallet.restcontrollers;
 
 import java.util.HashSet;
 import java.util.List;
@@ -74,6 +74,16 @@ public class UserRestController {
 	public ResponseEntity<?> getUserById(@PathVariable("userID") Long idUser) {
 		try {
 			UserPersistentObjectDto userDto = userService.getUserById(idUser);
+			return ResponseEntity.ok(userDto);
+		} catch (ResourceNotFoundException resourceNotFoundException) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resourceNotFoundException.getMessage());
+		}
+	}
+
+	@GetMapping(value = "/username/{username}")
+	public ResponseEntity<?> getUserByUsername(@PathVariable("username") String username) {
+		try {
+			UserPersistentObjectDto userDto = userService.findByUsername(username);
 			return ResponseEntity.ok(userDto);
 		} catch (ResourceNotFoundException resourceNotFoundException) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resourceNotFoundException.getMessage());
