@@ -41,6 +41,7 @@ public class User extends EntityFinancialEducationAndVirtualWallet {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+	private String image;
 	@Transient
 	public static final Long ID_USER_ADMIN = 1L;
 

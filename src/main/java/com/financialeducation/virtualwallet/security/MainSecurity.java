@@ -57,7 +57,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/api/authenticate/v1/**").permitAll()
-				.antMatchers("/api/user/v1/register/**").permitAll().anyRequest().authenticated().and()
+				.antMatchers("/api/user/v1/register/**").permitAll().antMatchers("/media/**").permitAll().anyRequest().authenticated().and()
 				.exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(getJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

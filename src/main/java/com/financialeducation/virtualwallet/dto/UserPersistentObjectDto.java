@@ -30,5 +30,6 @@ public class UserPersistentObjectDto extends EntityFinancialEducationAndVirtualW
 	private boolean enabled;
 	@JsonIgnore
 	private Set<RolePersistentObjectDto> roles;
+	private String image;
 
 }

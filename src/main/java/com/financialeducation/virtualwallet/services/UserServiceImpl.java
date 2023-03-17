@@ -80,7 +80,6 @@ public class UserServiceImpl implements IUserService {
 		List<UserPersistentObjectDto> listUsersDto = pageUser.stream()
 				.map(user -> modelMapper.map(user, UserPersistentObjectDto.class)).collect(Collectors.toList());
 		return new PageImpl<>(listUsersDto);
-
 	}
 
 	@Override
@@ -89,7 +88,6 @@ public class UserServiceImpl implements IUserService {
 		return modelMapper.map(
 				optionalUser.orElseThrow(() -> new ResourceNotFoundException("User", "ID", idUser.toString())),
 				UserPersistentObjectDto.class);
-
 	}
 
 	@Override
@@ -105,7 +103,6 @@ public class UserServiceImpl implements IUserService {
 			throw new BadRequestException("id " + idUserUpdate);
 		}
 		return this.createUser(userPersistentObjectDto);
-
 	}
 
 	@Override
